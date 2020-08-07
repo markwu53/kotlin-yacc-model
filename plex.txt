@@ -1,0 +1,19 @@
+lex = one_token*;
+one_token =
+    identifier -> make_token_identifier
+    | space -> make_token_space
+    | ysymbol -> make_token_ysymbol
+    | ykeyword -> make_token_ykeyword
+    | line_comment -> make_token_line_comment
+    | block_comment -> make_token_block_comment
+    | symbol -> make_token_symbol
+    ;
+identifier = identifier_first_char identifier_next_char*;
+identifier_first_char = is_alpha | '_';
+identifier_next_char = identifier_first_char | is_digit;
+space = is_space+;
+ysymbol = quote any quote;
+ykeyword = dquote identifier dquote;
+symbol = any;
+line_comment = '/' '/' line_comment_char* line_comment_end;
+block_comment = '/' '*' block_comment_char* '*' '/';

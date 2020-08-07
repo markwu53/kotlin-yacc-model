@@ -1,0 +1,19 @@
+y_grammar = y_entry+;
+y_entry = y_term '=' y_entry_def ';' -> pdef;
+y_entry_def = y_sequence y_or_sequences -> pcombine;
+y_or_sequences = y_or_sequence* -> pcollect;
+y_or_sequence = '|' y_sequence -> pskip;
+y_sequence = y_seq_objects y_post_processing? -> ppost;
+y_post_processing = p_post_op y_processing -> pskip;
+p_post_op = '-' '>';
+y_seq_objects = y_seq_object+ -> pseq;
+y_seq_object = y_term '*' -> pzero
+    | y_term '+' -> pmore
+    | y_term '?' -> poptional
+    | y_term
+    | y_symbol
+    | y_keyword '?' -> poptional
+    | y_keyword
+    ;
+y_term = y_identifier;
+y_processing = y_identifier;
